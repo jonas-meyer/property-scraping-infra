@@ -15,7 +15,7 @@ envs/$(STAGE)/.terraform: ## automatically initialize terraform
 	terraform init -backend-config="./envs/$(STAGE)/terraform_backend_config_$(STAGE)$(CI_SUFFIX).tfvars" -reconfigure
 
 upgrade-tf-dependencies: ## upgrade terraform provider and module versions to satisfy requirements
-	terraform init -backend-config="./envs/$(STAGE)/backend_config_$(STAGE)$(CI_SUFFIX).tfvars" -upgrade=true
+	terraform init -backend-config="./envs/$(STAGE)/terraform_backend_config_$(STAGE)$(CI_SUFFIX).tfvars" -upgrade=true
 	terraform providers lock -platform=darwin_amd64 -platform=darwin_arm64 -platform=linux_amd64
 
 terraform: ## run arbitrary terraform commands WITH parameters and vars; eg. 'make state mv terraform a.b a.c'
