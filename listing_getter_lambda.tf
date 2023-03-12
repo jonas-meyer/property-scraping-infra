@@ -11,7 +11,7 @@ resource "aws_s3_object" "lambda_zip" {
 }
 
 resource "aws_lambda_function" "listing-getter-lambda" {
-  function_name = "lambda_function_name"
+  function_name = "listing-getter"
   role          = aws_iam_role.lambda_role.arn
   runtime       = "go1.x"
   handler       = "src"
@@ -47,6 +47,11 @@ resource "aws_iam_role" "lambda_role" {
 resource "aws_iam_policy" "s3-policy" {
   name        = "tf-policydocument"
   policy      = data.aws_iam_policy_document.s3-access.json
+}
+
+resource "aws_iam_role_policy_attachment" "basic" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  role       = aws_iam_role.lambda_role.name
 }
 
 resource "aws_iam_role_policy_attachment" "attach-s3" {

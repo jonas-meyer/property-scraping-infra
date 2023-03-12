@@ -50,6 +50,11 @@ variable "dynamodb_table" {
   description = "The dynamodb table in which the remote lock of the -infra project resides"
 }
 
+variable "schedule_expression" {
+  type        = string
+  description = "The schedule at which the listing getter lambda should be invoked"
+}
+
 
 # -----------------------------------------------------------------------------
 # CONSTANTS
