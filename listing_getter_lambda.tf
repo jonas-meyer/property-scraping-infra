@@ -19,6 +19,11 @@ resource "aws_lambda_function" "listing-getter-lambda" {
   s3_bucket        = aws_s3_bucket.lambda_code.bucket
   s3_key           = "src.zip"
 
+  environment {
+    variables = {
+      ZOOPLA_API_KEY = var.zoopla_api_key
+    }
+  }
 
   lifecycle {
     ignore_changes = [

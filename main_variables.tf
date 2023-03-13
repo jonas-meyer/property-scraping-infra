@@ -55,6 +55,12 @@ variable "schedule_expression" {
   description = "The schedule at which the listing getter lambda should be invoked"
 }
 
+variable "zoopla_api_key" {
+  description = "Zoopla api key"
+  type        = string
+  sensitive   = true
+}
+
 
 # -----------------------------------------------------------------------------
 # CONSTANTS
