@@ -37,6 +37,7 @@ module "aws_oidc_github" {
   github_repositories = [
     "jonas-meyer/property-scraping-service:ref:refs/heads/main",
   ]
+  attach_read_only_policy = false
 
   iam_role_inline_policies = {
     "example_inline_policy" : data.aws_iam_policy_document.github.json
@@ -59,6 +60,7 @@ data "aws_iam_policy_document" "github" {
   statement {
     effect = "Allow"
     actions = [
+      "s3:GetObject",
       "s3:PutObject"
     ]
     resources = [
