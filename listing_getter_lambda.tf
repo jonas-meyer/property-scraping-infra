@@ -1,12 +1,12 @@
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_dir  = "./build"
-  output_path = "./src.zip"
+  output_path = "./zip/deployment.zip"
 }
 
 resource "aws_s3_object" "lambda_zip" {
   bucket = aws_s3_bucket.lambda_code.id
-  key    = "src.zip"
+  key    = "listing-getter.zip"
   source = data.archive_file.lambda_zip.output_path
 }
 
@@ -14,10 +14,10 @@ resource "aws_lambda_function" "listing-getter-lambda" {
   function_name = "listing-getter"
   role          = aws_iam_role.lambda_role.arn
   runtime       = "go1.x"
-  handler       = "src"
+  handler       = "main"
   publish          = true
   s3_bucket        = aws_s3_bucket.lambda_code.bucket
-  s3_key           = "src.zip"
+  s3_key           = "listing-getter.zip"
 
   environment {
     variables = {
