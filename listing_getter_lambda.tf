@@ -15,13 +15,16 @@ resource "aws_lambda_function" "listing-getter-lambda" {
   role          = aws_iam_role.lambda_role.arn
   runtime       = "go1.x"
   handler       = "main"
-  publish          = true
-  s3_bucket        = aws_s3_bucket.lambda_code.bucket
-  s3_key           = "listing-getter.zip"
+  publish       = true
+  s3_bucket     = aws_s3_bucket.lambda_code.bucket
+  s3_key        = "listing-getter.zip"
+  timeout       = 10
 
   environment {
     variables = {
-      ZOOPLA_API_KEY = var.zoopla_api_key
+      ZOOPLA_API_KEY     = var.zoopla_api_key
+      LAMBDA_ENVIRONMENT = var.environment
+      LOG_LEVEL          = var.log_level
     }
   }
 
@@ -36,11 +39,11 @@ resource "aws_iam_role" "lambda_role" {
   name = "listing-getter-lambda-role"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version   = "2012-10-17"
     Statement = [
       {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
         Principal = {
           Service = "lambda.amazonaws.com"
         }
@@ -50,8 +53,8 @@ resource "aws_iam_role" "lambda_role" {
 }
 
 resource "aws_iam_policy" "s3-policy" {
-  name        = "tf-policydocument"
-  policy      = data.aws_iam_policy_document.s3-access.json
+  name   = "tf-policydocument"
+  policy = data.aws_iam_policy_document.s3-access.json
 }
 
 resource "aws_iam_role_policy_attachment" "basic" {
@@ -66,7 +69,7 @@ resource "aws_iam_role_policy_attachment" "attach-s3" {
 
 data "aws_iam_policy_document" "s3-access" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = [
       "s3:ListBucket"
     ]
@@ -75,7 +78,7 @@ data "aws_iam_policy_document" "s3-access" {
     ]
   }
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = [
       "s3:GetObject",
       "s3:PutObject"

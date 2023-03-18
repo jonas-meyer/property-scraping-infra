@@ -36,17 +36,17 @@ variable "common_tags" {
 }
 
 variable "bucket" {
-  type = string
+  type        = string
   description = "The bucket in which the remote state of the -infra project resides"
 }
 
 variable "key" {
-  type = string
+  type        = string
   description = "The key of the S3-object representing the remote state of the -infra project inside shared_remote_backend_bucket"
 }
 
 variable "dynamodb_table" {
-  type = string
+  type        = string
   description = "The dynamodb table in which the remote lock of the -infra project resides"
 }
 
@@ -61,6 +61,12 @@ variable "zoopla_api_key" {
   sensitive   = true
 }
 
+variable "log_level" {
+  description = "The level at which logs are written to cloudwatch"
+  type        = string
+  default     = "debug"
+}
+
 
 # -----------------------------------------------------------------------------
 # CONSTANTS
@@ -69,7 +75,7 @@ variable "zoopla_api_key" {
 locals {
   deployment_name = "property-scraping"
   resource_prefix = "${var.service_name}-${var.environment}"
-  common_tags = merge(var.common_tags, {
+  common_tags     = merge(var.common_tags, {
     deployment  = var.service_name
     environment = var.environment
     managed_by  = var.repo_name
