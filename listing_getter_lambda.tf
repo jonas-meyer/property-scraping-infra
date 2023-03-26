@@ -6,18 +6,22 @@ data "archive_file" "lambda_zip" {
 
 resource "aws_s3_object" "lambda_zip" {
   bucket = aws_s3_bucket.lambda_code.id
-  key    = "listing-getter.zip"
+  key    = "${local.lambda_name}.zip"
   source = data.archive_file.lambda_zip.output_path
 }
 
+locals {
+  lambda_name = "listing-getter"
+}
+
 resource "aws_lambda_function" "listing-getter-lambda" {
-  function_name = "listing-getter"
+  function_name = local.lambda_name
   role          = aws_iam_role.lambda_role.arn
   runtime       = "go1.x"
   handler       = "main"
   publish       = true
   s3_bucket     = aws_s3_bucket.lambda_code.bucket
-  s3_key        = "listing-getter.zip"
+  s3_key        = "${local.lambda_name}.zip"
   timeout       = 10
 
   environment {
@@ -36,7 +40,7 @@ resource "aws_lambda_function" "listing-getter-lambda" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name = "listing-getter-lambda-role"
+  name = "${local.lambda_name}-lambda-role"
 
   assume_role_policy = jsonencode({
     Version   = "2012-10-17"

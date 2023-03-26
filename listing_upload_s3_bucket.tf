@@ -44,3 +44,11 @@ resource "aws_s3_bucket_cors_configuration" "listing_upload" {
     max_age_seconds = 3000
   }
 }
+
+resource "aws_lambda_permission" "s3-lambda-permission" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.dynamodb_pusher_lambda.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.listing_upload.arn
+}

@@ -5,7 +5,7 @@ terraform {
       version = "~> 4.57.1"
     }
     archive = {
-      source = "hashicorp/archive"
+      source  = "hashicorp/archive"
       version = "2.3.0"
     }
     tls = {
@@ -18,7 +18,7 @@ terraform {
     #properties can be found in /envs/{ENVIRONMENT}/terraform_backend_config.tfvars
   }
 
-  required_version = "~> 1.3.9"
+  required_version = "~> 1.4.2"
 }
 
 provider "aws" {
@@ -46,7 +46,7 @@ module "aws_oidc_github" {
 
 data "aws_iam_policy_document" "github" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = [
       "s3:ListBucket",
       "iam:ListRoles",
@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "github" {
     ]
   }
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = [
       "s3:GetObject",
       "s3:PutObject"
